@@ -52,10 +52,14 @@ class DataFetcher {
       if (response.statusCode == 200) {
         try {
           var data = response.data;
-          print(data["access_token"]);
-          // print(data["token_type"]);
-          pref.setToken(token: "${data["access_token"]}");
-          pref.setUserId(id: "${data["data"]["id"]}");
+          // print("Token: ${data["access_token"]}");
+          // print("Type: ${data["token_type"]}");
+          // print("User Id: ${data["data"]["id"]}");
+         await pref.setToken(token: "${data["access_token"]}");
+         await pref.setUserId(id: "${data["data"]["id"]}");
+
+         print(await pref.getToken());
+         print(await pref.getUserId());
           //
 
           user = User(
@@ -86,6 +90,7 @@ class DataFetcher {
           user = User(
             userName: data["name"],
             email: data["email"],
+            userId: data["id"],
           );
         } catch (e) {
 
@@ -97,20 +102,32 @@ class DataFetcher {
   }
 
   Future<List<Task>?> retrieveAllTask() async {
-    List<Task>? tasks;
+    List<Task> tasks=[];
     Response<dynamic>? response =
-    await _connectionHelper.getDataWithHeaders(AppUrls.getTask);
-
-    print(response);
+    await _connectionHelper.getData(AppUrls.getTask);
+    //
+    // print(response);
     if (response != null) {
       if (response.statusCode == 200) {
         try {
           var data = response.data;
+       //   print(data.length);
 
-          for( var d in data) {
-            tasks!.add(d);
+          List<dynamic> dataList = data;
+
+          for( int d=0;d<dataList.length; d++) {
+            // print(dataList[d]['title']);
+           tasks.add(Task(
+             title: dataList[d]['title'],
+               taskId: dataList[d]['id'],
+               body:  dataList[d]['body'],
+               isFinished:  dataList[d]['isFinished'],
+             submitorId: dataList[d]['assign_to_id'],
+             user_id: dataList[d]['user_id'],
+
+           ));
           }
-          print(tasks);
+        //  print(tasks.length);
 
         } catch (e) {
 
@@ -118,6 +135,8 @@ class DataFetcher {
         }
       }
     }
+
+    return tasks;
 
   }
 

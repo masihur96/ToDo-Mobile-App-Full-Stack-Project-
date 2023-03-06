@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/model/custom_size.dart';
 import 'package:todo_app/model/user_model.dart';
 import 'package:todo_app/view/login_screen.dart';
@@ -24,36 +25,38 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
   }
-  String? prefToken;
+
   String? prefUserId;
   navigate()async{
+    final prefs = await SharedPreferences.getInstance();
+    String? prefToken = prefs.getString('token');
+
     if(prefToken != null){
       prefToken = await pref.getToken();
-    }
-
-    //
-    // print("Print:  $prefToken");
-    if(prefToken != null){
       prefUserId = await pref.getUserId();
-     User? user = await  _dataFetcher.retrieveUserWithUid(customerUid: prefUserId!);
-     if(user != null){
-       Future.delayed(Duration(seconds: 2), () {
-         Navigator.push(context, MaterialPageRoute(builder: (_)=> HomeScreen(user: user,),),);
-       });
+      User? user = await  _dataFetcher.retrieveUserWithUid(customerUid: prefUserId!);
+      if(user != null){
+        Future.delayed(Duration(seconds: 2), () {
+          Navigator.push(context, MaterialPageRoute(builder: (_)=> HomeScreen(user: user,),),);
+        });
 
-     }else{
-       Future.delayed(Duration(seconds: 2), () {
-         Navigator.push(context, MaterialPageRoute(builder: (_)=>LoginScreen(),),);
-       });
-     }
+      }else{
+        Future.delayed(Duration(seconds: 2), () {
+          Navigator.push(context, MaterialPageRoute(builder: (_)=>LoginScreen(),),);
+        });
+      }
+
     }else{
       Future.delayed(Duration(seconds: 2), () {
         Navigator.push(context, MaterialPageRoute(builder: (_)=>LoginScreen(),),);
       });
 
     }
-    // print("Pref: $prefToken");
-    // print("PrefUserId: $prefUserId");
+
+    setState(() {
+
+    });
+
   }
   @override
   Widget build(BuildContext context) {

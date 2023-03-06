@@ -22,19 +22,55 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
+  final DataFetcher _dataFetcher = DataFetcher();
 
   @override
   void initState() {
-    fetchTask();
+   // fetchTask();
     // TODO: implement initState
     super.initState();
   }
+  List<Task> totalTask=[];
+  List<Task> assignByMeTask=[];
+  List<Task> assignToMeTask=[];
+  List<Task> pendingTask=[];
+  List<Task> finishedTask=[];
 
   fetchTask()async{
-    final DataFetcher _dataFetcher = DataFetcher();
+    assignByMeTask=[];
+    assignToMeTask=[];
+    totalTask=[];
      List<Task>?  tasks = await  _dataFetcher.retrieveAllTask();
-    // print(tasks!.length);
+
+     for(int i = 0;i<tasks!.length;i++){
+
+       if(tasks[i].user_id==widget.user.userId){
+         assignByMeTask.add(tasks[i]);
+         totalTask.add(tasks[i]);
+       }
+       if(tasks[i].submitorId==widget.user.userId){
+         assignToMeTask.add(tasks[i]);
+         totalTask.add(tasks[i]);
+       }
+     }
+
+    print(assignByMeTask.length);
+    print(assignToMeTask.length);
+    print(totalTask.length);
+    finishedTask = [];
+    pendingTask = [];
+    for(int j = 0;j<totalTask.length;j++){
+      if(totalTask[j].isFinished!){
+        finishedTask.add(totalTask[j]);
+      }else{
+        pendingTask.add(totalTask[j]);
+      }
+    }
+    print("Finished: ${finishedTask.length}");
+    print("Pending: ${pendingTask.length}");
+     setState(() {
+
+     });
 
   }
 
@@ -72,16 +108,16 @@ class _HomeScreenState extends State<HomeScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-              CardButton(title: "Total Task",count: "100 Task",isVertical:true, icon:  Icons.all_inbox_outlined, bgColor: Colors.black12, onTap: (){
+              CardButton(title: "Total Task",count: "${totalTask.length} Task",isVertical:true, icon:  Icons.all_inbox_outlined, bgColor: Colors.black12, onTap: (){
 
               }),
               Column(
 
                 children: [
-                CardButton(title: "Pending\nTask",count: "40 Task",isVertical:false, icon:  Icons.pending_outlined, bgColor: Colors.black12, onTap: (){
+                CardButton(title: "Pending\nTask",count: "${pendingTask.length} Task",isVertical:false, icon:  Icons.pending_outlined, bgColor: Colors.black12, onTap: (){
 
                 }),
-                CardButton(title: "Finished\nTask",count: "60 Task",isVertical:false, icon:  Icons.pin_end_rounded, bgColor: Colors.black12, onTap: (){
+                CardButton(title: "Finished\nTask",count: "${finishedTask.length}  Task",isVertical:false, icon:  Icons.pin_end_rounded, bgColor: Colors.black12, onTap: (){
 
                 }),
               ],)
@@ -92,10 +128,15 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(fontSize: screenSize(context, .04),fontWeight: FontWeight.bold),),
             Expanded(
               child: ListView.builder(
-                itemCount: 5,
+                itemCount: totalTask.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  return TaskListTile(title: 'Task One', status: 'Done',photo: "",onTap: (){},);
+                  print(totalTask[index].title);
+                  return TaskListTile(
+                    task: totalTask[index],
+                    onTap: (){
+
+                    },);
                 },
               ),
             ),

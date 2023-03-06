@@ -12,7 +12,8 @@ class SharedPref {
   }
   Future<String> getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token')!;
+    String? prefToken = prefs.getString('token');
+    return prefToken!;
   }
     Future<bool> removeToken() async {
       final prefs = await SharedPreferences.getInstance();

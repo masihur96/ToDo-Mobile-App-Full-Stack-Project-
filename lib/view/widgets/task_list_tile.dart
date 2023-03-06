@@ -3,16 +3,16 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
 import '../../model/constants.dart';
 import '../../model/custom_size.dart';
+import '../../model/task_model.dart';
 
 class TaskListTile extends StatelessWidget {
-  final String title;
-  final String status;
-  final String photo;
+  final Task? task;
   final Function() onTap;
-  const TaskListTile({Key? key,required this.title,required this.status,required this.photo,required this.onTap}) : super(key: key);
+  const TaskListTile({Key? key,required this.task,required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return GestureDetector(
       onTap: onTap,
       child: Card(
@@ -53,7 +53,7 @@ color: Colors.grey,
                         ),
                         SizedBox(width: 15,),
 
-                        cardInfo(context),
+                        cardInfo(context,task!),
                       ],
                     ),
 
@@ -77,22 +77,24 @@ color: Colors.grey,
     );
   }
 
-  Widget cardInfo(BuildContext context){
+  Widget cardInfo(BuildContext context,Task task){
     return  Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Text(
-          title,
-          textAlign: TextAlign.center,
-          style:  TextStyle(
-              color: TodoColor.buttonColor,
-              fontFamily: "Roboto",
-              fontSize: screenSize(context, .05),
-              fontWeight: FontWeight.bold),
+        FittedBox(
+          child: Text(
+            task.title!,
+            textAlign: TextAlign.center,
+            style:  TextStyle(
+                color: TodoColor.buttonColor,
+                fontFamily: "Roboto",
+                fontSize: screenSize(context, .05),
+                fontWeight: FontWeight.bold),
+          ),
         ),
         Text(
-          status,
+          task.isFinished! ? "Done":"Pending",
           textAlign: TextAlign.center,
           style:  TextStyle(
               color: TodoColor.buttonColor,

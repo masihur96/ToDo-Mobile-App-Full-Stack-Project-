@@ -55,22 +55,35 @@ class ConnectionHelper {
     Dio dio = Dio();
     String prefToken = await pref.getToken();
 
-    Map<String, String> headers = {
-      "Authorization": "bearer ${prefToken}",
-      'Content-Type': 'application/json'
-    };
 
-    print(headers);
-    print(url);
-    try {
-      Response response = await dio.get(
-        url,
-        options: Options(headers: headers),
-      );
-      print(response.statusCode);
-    } catch (e) {
-      print('Error: $e');
-    }
+
+
+
+    // Map<String, String> headers = {
+    //   "Authorization": "bearer ${prefToken}",
+    // };
+
+    final response = await dio.get(
+      url,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${prefToken}',
+        },
+      ),
+    );
+
+    print(response.statusCode);
+    // print(url);
+    // try {
+    //   Response response = await dio.get(
+    //     url,
+    //     options: Options(headers: headers),
+    //   );
+    //   print(response.statusCode);
+    // } catch (e) {
+    //   print('Error: $e');
+    // }
     // try {
     //   // Starting Timer
     //   DateTime stime = DateTime.now();
