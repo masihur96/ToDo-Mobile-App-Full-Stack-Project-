@@ -23,6 +23,7 @@ class TODOTextFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final bool number;
   final bool isObscure;
+  final bool isEnable;
   final int maxLines;
 
   const TODOTextFormField({
@@ -45,6 +46,7 @@ class TODOTextFormField extends StatelessWidget {
     this.keyboardType,
     this.isObscure = false,
     this.number = false,
+    this.isEnable=true,
     this.onTap,
     this.onFieldSubmitted,
     this.maxLines = 1,
@@ -53,6 +55,7 @@ class TODOTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: isEnable,
       maxLines: maxLines,
       initialValue: initalValue,
       controller: textEditingController,

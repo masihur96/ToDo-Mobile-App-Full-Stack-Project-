@@ -1,24 +1,32 @@
 
 import 'package:flutter/material.dart';
+import 'package:todo_app/view/widgets/todo_text_form_field.dart';
+
+import '../controller/data_fetcher.dart';
+import '../model/user_model.dart';
+import 'home_screen.dart';
 
 
 class AddTaskScreen extends StatefulWidget {
+  final List<User> users;
+
+  const AddTaskScreen({Key? key,required this.users}) : super(key: key);
   @override
   _AddTaskScreenState createState() => _AddTaskScreenState();
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
-  //watch field
-  final TextEditingController _videoTitle = TextEditingController();
-  final TextEditingController _videoLink = TextEditingController();
-  final TextEditingController _watchedTime = TextEditingController();
 
-
+  final DataFetcher _dataFetcher = DataFetcher();
+  String? _titleText;
+  String? _bodyText;
+  String? _selectedEmployeeText;
+  bool _isLoading = false;
 
   int? watchingRequiredCoin = 0;
   int? watchingRateCoin = 1;
 
-
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -55,28 +63,93 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                     children: [
 
-                      TextFormField(
-                        controller: _videoTitle,
-                        decoration: const InputDecoration(
-                          border: UnderlineInputBorder(),
-                          labelText: 'Enter Task Title',
-                        ),
+                      Container(
+                          width: size.width,
+                          padding: EdgeInsets.fromLTRB(
+                              size.width * .05, 20.0, size.width * .05, 0.0),
+                          child: TODOTextFormField(
+                            hintText: "Title",
+                            validator: (String? value) {
+                              if (value == null || value.trim() == "") {
+                                return 'Title is Required';
+                              }
+                              return null;
+                            },
+                            onSaved: (String? value) {
+                              setState(() {
+                                _titleText = value?.trim();
+                              });
+                            },
+
+
+                            labelText: "Title",
+
+                          )
                       ),
-                      TextFormField(
-                        controller: _videoLink,
-                        decoration: const InputDecoration(
-                          border: UnderlineInputBorder(),
-                          labelText: 'Enter Task Description',
-                        ),
+
+
+                      Container(
+                          width: size.width,
+                          padding: EdgeInsets.fromLTRB(
+                              size.width * .05, 20.0, size.width * .05, 0.0),
+                          child: TODOTextFormField(
+                            hintText: "Description",
+
+                            validator: (String? value) {
+                              if (value == null || value.trim() == "") {
+                                return 'Description is Required';
+                              }
+                              return null;
+                            },
+                            onSaved: (String? value) {
+                              setState(() {
+                                _bodyText = value?.trim();
+                              });
+                            },
+
+
+                            labelText: "Description",
+
+                          )
                       ),
+
                       SizedBox(height: size.width * .02),
-                      TextFormField(
-                        controller: _videoLink,
-                        decoration: const InputDecoration(
-                          border: UnderlineInputBorder(),
-                          labelText: 'Assign An Employee',
-                        ),
+                      Container(
+                          width: size.width,
+                          padding: EdgeInsets.fromLTRB(
+                              size.width * .05, 20.0, size.width * .05, 0.0),
+                          child:
+                          
+                          GestureDetector(
+                            onTap: (){
+                              showAlertDialog(context);
+                            },
+                            child: TODOTextFormField(
+                              textEditingController: TextEditingController(text: _selectedEmployeeText),
+                              isEnable: false,
+                              onTap: (){
+                                showAlertDialog(context);
+                              },
+                              hintText: "Employee",
+                              validator: (String? value) {
+                                if (value == null || value.trim() == "") {
+                                  return 'Employee is Required';
+                                }
+                                return null;
+                              },
+                              onSaved: (String? value) {
+                                setState(() {
+                                  _selectedEmployeeText = value?.trim();
+                                });
+                              },
+
+
+                              labelText: "Employee",
+
+                            ),
+                          )
                       ),
+
                       // Container(
                       //   width: size.width,
                       //   height: size.width * .3,
@@ -146,6 +219,82 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     padding: EdgeInsets.only(top: size.width * .04),
                     child: ElevatedButton(
                       onPressed: () async {
+
+
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+
+                          if (_titleText !=null && _bodyText != null ) {
+
+                            if (_selectedEmployeeText!.isNotEmpty &&  _titleText!.isNotEmpty){
+
+
+                              setState(() {
+                                _isLoading = true;
+                              });
+                              print(_selectedEmployeeText);
+                              print(_titleText);
+                              print(_bodyText);
+                              // User? user = await _dataFetcher.login(
+                              //   email: _emailText!,
+                              //   password: _passwordText!,
+                              // );
+                              // if (user != null) {
+                              //
+                              //   setState(() {
+                              //     _isLoading = false;
+                              //   });
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //     const SnackBar(
+                              //       content: Text("Login Successful"),
+                              //     ),
+                              //   );
+                              //   _emptyFieldCreator();
+                              //
+                              //   Navigator.push(context, MaterialPageRoute(builder: (_)=> HomeScreen(user: widget.users,),),);
+                              //
+                              // } else {
+                              //   setState(() {
+                              //     _isLoading = false;
+                              //   });
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //     const SnackBar(
+                              //       content: Text("Something is Wrong"),
+                              //     ),
+                              //   );
+                              // }
+                              //
+                              //
+
+
+
+
+                            }else{
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Name,Email & Password is required"),
+                                ),
+                              );
+
+                            }
+                          }
+                          else{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Name,Email & Password is required"),
+                              ),
+                            );
+
+                          }
+
+
+
+
+
+                        }
+                        print(_titleText);
+                        print(_bodyText);
+                        print(_selectedEmployeeText);
                         // if (watchingRequiredCoin! >=
                         //     int.parse(firebaseProvider
                         //         .userModel.currentBalance!)) {
@@ -184,5 +333,64 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         ),
       ),
     );
+  }
+  showAlertDialog(BuildContext context) {
+
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop(); // dismiss dialog
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Add Task"),
+      content: Column(
+        children: [
+
+          Expanded(
+            child: ListView.builder(
+              itemCount: widget.users.length,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text("${widget.users[index].userName}"),
+                  onTap: () {
+
+                    setState((){
+                      _selectedEmployeeText = widget.users[index].userName;
+                    });
+                    Navigator.pop(context);
+
+                    // do something when item is tapped
+                  },
+                );
+              },
+            ),
+          )
+
+        ],
+      ),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  _emptyFieldCreator() {
+    setState((){
+      _titleText = "";
+      _bodyText = "";
+    });
+
   }
 }

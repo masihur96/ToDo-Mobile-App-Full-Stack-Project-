@@ -101,6 +101,36 @@ class DataFetcher {
     return user;
   }
 
+  Future<List<User>?> retrieveAllUser() async {
+   List<User> users=[];
+    Response<dynamic>? response =
+    await _connectionHelper.getData(AppUrls.getUser);
+
+    if (response != null) {
+      if (response.statusCode == 200) {
+        try {
+          var data = response.data;
+
+          List<dynamic> dataList = data;
+          print("User List: ${dataList.length}");
+          for( int d=0;d<dataList.length; d++) {
+            // print(dataList[d]['title']);
+            users.add(User(
+              userName: data[d]["name"],
+              email: data[d]["email"],
+              userId: data[d]["id"],
+            ));
+          }
+
+        } catch (e) {
+
+          print(e);
+        }
+      }
+    }
+    return users;
+  }
+
   Future<List<Task>?> retrieveAllTask() async {
     List<Task> tasks=[];
     Response<dynamic>? response =

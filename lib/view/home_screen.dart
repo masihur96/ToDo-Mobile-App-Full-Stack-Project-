@@ -26,7 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-   // fetchTask();
+ fetchTask();
+ fetchUser();
     // TODO: implement initState
     super.initState();
   }
@@ -73,7 +74,16 @@ class _HomeScreenState extends State<HomeScreen> {
      });
 
   }
+  List<User> totalUser=[];
 
+  fetchUser()async{
+
+    totalUser=[];
+    List<User>?  users = await  _dataFetcher.retrieveAllUser();
+    totalUser = users!;
+ print(users.length);
+
+  }
 
 
   @override
@@ -81,8 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       floatingActionButton: GestureDetector(
         onTap: (){
-          fetchTask();
-         // Navigator.push(context, MaterialPageRoute(builder: (_)=>AddTaskScreen()));
+          //fetchUser();
+         Navigator.push(context, MaterialPageRoute(builder: (_)=>AddTaskScreen(users: totalUser,)));
         },
         child: const CircleAvatar(
           backgroundColor: Colors.black,
