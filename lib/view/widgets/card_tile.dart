@@ -111,6 +111,7 @@ class CardButton extends StatelessWidget {
               fontFamily: "Roboto",
               fontWeight: FontWeight.bold),
         ),
+
         Text(
           count,
           textAlign: TextAlign.center,
