@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/view/widgets/todo_text_form_field.dart';
 
 import '../controller/data_fetcher.dart';
+import '../model/task_model.dart';
 import '../model/user_model.dart';
 import 'home_screen.dart';
 
@@ -59,156 +60,101 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 18),
-                  child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
 
-                      Container(
-                          width: size.width,
-                          padding: EdgeInsets.fromLTRB(
-                              size.width * .05, 20.0, size.width * .05, 0.0),
-                          child: TODOTextFormField(
-                            hintText: "Title",
-                            validator: (String? value) {
-                              if (value == null || value.trim() == "") {
-                                return 'Title is Required';
-                              }
-                              return null;
-                            },
-                            onSaved: (String? value) {
-                              setState(() {
-                                _titleText = value?.trim();
-                              });
-                            },
-
-
-                            labelText: "Title",
-
-                          )
-                      ),
-
-
-                      Container(
-                          width: size.width,
-                          padding: EdgeInsets.fromLTRB(
-                              size.width * .05, 20.0, size.width * .05, 0.0),
-                          child: TODOTextFormField(
-                            hintText: "Description",
-
-                            validator: (String? value) {
-                              if (value == null || value.trim() == "") {
-                                return 'Description is Required';
-                              }
-                              return null;
-                            },
-                            onSaved: (String? value) {
-                              setState(() {
-                                _bodyText = value?.trim();
-                              });
-                            },
-
-
-                            labelText: "Description",
-
-                          )
-                      ),
-
-                      SizedBox(height: size.width * .02),
-                      Container(
-                          width: size.width,
-                          padding: EdgeInsets.fromLTRB(
-                              size.width * .05, 20.0, size.width * .05, 0.0),
-                          child:
-                          
-                          GestureDetector(
-                            onTap: (){
-                              showAlertDialog(context);
-                            },
+                        Container(
+                            width: size.width,
+                            padding: EdgeInsets.fromLTRB(
+                                size.width * .05, 20.0, size.width * .05, 0.0),
                             child: TODOTextFormField(
-                              textEditingController: TextEditingController(text: _selectedEmployeeText),
-                              isEnable: false,
-                              onTap: (){
-                                showAlertDialog(context);
-                              },
-                              hintText: "Employee",
+                              hintText: "Title",
                               validator: (String? value) {
                                 if (value == null || value.trim() == "") {
-                                  return 'Employee is Required';
+                                  return 'Title is Required';
                                 }
                                 return null;
                               },
                               onSaved: (String? value) {
                                 setState(() {
-                                  _selectedEmployeeText = value?.trim();
+                                  _titleText = value?.trim();
                                 });
                               },
 
 
-                              labelText: "Employee",
+                              labelText: "Title",
 
-                            ),
-                          )
-                      ),
+                            )
+                        ),
 
-                      // Container(
-                      //   width: size.width,
-                      //   height: size.width * .3,
-                      //   decoration: BoxDecoration(
-                      //       border: Border.all(color: Colors.red, width: 1.3),
-                      //       borderRadius: BorderRadius.all(
-                      //           Radius.circular(size.width * .01),),),
-                      //   child: Padding(
-                      //     padding: EdgeInsets.all(size.width * .02),
-                      //     child: Column(
-                      //       crossAxisAlignment: CrossAxisAlignment.start,
-                      //       children: [
-                      //         Padding(
-                      //           padding: EdgeInsets.symmetric(
-                      //               vertical: size.width * .03),
-                      //           child: Row(
-                      //             children: [
-                      //               Text(
-                      //                 'Watch Rate: $watchingRateCoin ',
-                      //                 style:
-                      //                 TextStyle(fontSize: size.width * .04),
-                      //               ),
-                      //               Image.asset(
-                      //                 'assets/images/logo.png',
-                      //                 height: size.width * .04,
-                      //                 width: size.width * .04,
-                      //               ),
-                      //             ],
-                      //           ),
-                      //         ),
-                      //         Divider(
-                      //           height: size.width * .03,
-                      //           color: Colors.red,
-                      //         ),
-                      //         Padding(
-                      //           padding: EdgeInsets.symmetric(
-                      //               vertical: size.width * .02),
-                      //           child: Row(
-                      //             children: [
-                      //               Text(
-                      //                 'Required Coin: $watchingRequiredCoin',
-                      //                 style: TextStyle(
-                      //                     fontSize: size.width * .04,
-                      //                     fontWeight: FontWeight.w500),
-                      //               ),
-                      //               Image.asset(
-                      //                 'assets/images/logo.png',
-                      //                 height: size.width * .04,
-                      //                 width: size.width * .04,
-                      //               ),
-                      //             ],
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
 
-                    ],
+                        Container(
+                            width: size.width,
+                            padding: EdgeInsets.fromLTRB(
+                                size.width * .05, 20.0, size.width * .05, 0.0),
+                            child: TODOTextFormField(
+                              hintText: "Description",
+
+                              validator: (String? value) {
+                                if (value == null || value.trim() == "") {
+                                  return 'Description is Required';
+                                }
+                                return null;
+                              },
+                              onSaved: (String? value) {
+                                setState(() {
+                                  _bodyText = value?.trim();
+                                });
+                              },
+
+
+                              labelText: "Description",
+
+                            )
+                        ),
+
+                        SizedBox(height: size.width * .02),
+                        Container(
+                            width: size.width,
+                            padding: EdgeInsets.fromLTRB(
+                                size.width * .05, 20.0, size.width * .05, 0.0),
+                            child:
+
+                            GestureDetector(
+                              onTap: (){
+                                showAlertDialog(context);
+                              },
+                              child: TODOTextFormField(
+                                textEditingController: TextEditingController(text: _selectedEmployeeText),
+                                isEnable: false,
+                                onTap: (){
+                                  showAlertDialog(context);
+                                },
+                                hintText: "Employee",
+                                validator: (String? value) {
+                                  if (value == null || value.trim() == "") {
+                                    return 'Employee is Required';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (String? value) {
+                                  setState(() {
+                                    _selectedEmployeeText = value?.trim();
+                                  });
+                                },
+
+
+                                labelText: "Employee",
+
+                              ),
+                            )
+                        ),
+
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -235,7 +181,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               print(_selectedEmployeeText);
                               print(_titleText);
                               print(_bodyText);
-                              // User? user = await _dataFetcher.login(
+                              // Task? task = await _dataFetcher.login(
                               //   email: _emailText!,
                               //   password: _passwordText!,
                               // );

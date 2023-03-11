@@ -8,6 +8,7 @@ class AppUrls {
   static const String loginUser = baseUrl + "login";
   static const String getUser = baseUrl + "user/";
   static const String getTask = baseUrl + "task";
+  static const String createTask = baseUrl + "task/";
   // static const String getAppSettings = baseUrl + "app-settings";
   // static const String getCustomers =
   //     "https://www.inventorykeeper.net/api/v2/customers";

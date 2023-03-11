@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:todo_app/model/custom_size.dart';
 import 'package:todo_app/view/add_task_screen.dart';
+import 'package:todo_app/view/assign_screen.dart';
 import 'package:todo_app/view/profile_screen.dart';
 import 'package:todo_app/view/widgets/appbar.dart';
 import 'package:todo_app/view/widgets/card_tile.dart';
@@ -119,18 +120,22 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
               CardButton(title: "Total Task",count: "${totalTask.length} Task",isVertical:true, icon:  Icons.all_inbox_outlined, bgColor: Colors.black12, onTap: (){
-
+                Navigator.push(context, MaterialPageRoute(builder: (_)=> AssignByScreen(tasks: totalTask,),),);
               }),
               Column(
 
                 children: [
-                CardButton(title: "Pending\nTask",count: "${pendingTask.length} Task",isVertical:false, icon:  Icons.pending_outlined, bgColor: Colors.black12, onTap: (){
+                CardButton(title: "Pending\nTask",
+                    count: "${pendingTask.length} Task",
+                    isVertical:false, icon:  Icons.pending_outlined, bgColor: Colors.black12, onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (_)=> AssignByScreen(tasks: pendingTask,),),);
 
                 }),
                 CardButton(title: "Finished\nTask",count: "${finishedTask.length}  Task",isVertical:false, icon:  Icons.pin_end_rounded, bgColor: Colors.black12, onTap: (){
-
+                  Navigator.push(context, MaterialPageRoute(builder: (_)=> AssignByScreen(tasks: finishedTask,),),);
                 }),
-              ],)
+              ],
+              ),
             ],),
             SizedBox(height: 10,),
             Text("Your Task",

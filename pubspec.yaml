@@ -39,6 +39,7 @@ dependencies:
   flutter_neumorphic: ^3.2.0
   flutter_feather_icons: ^2.0.0+1
   floating_chat_button: ^1.0.1
+  scroll_app_bar: ^2.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

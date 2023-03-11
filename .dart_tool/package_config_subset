@@ -126,6 +126,14 @@ provider
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.5/
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.5/lib/
+scroll_app_bar
+2.12
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/scroll_app_bar-2.0.0/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/scroll_app_bar-2.0.0/lib/
+scroll_bars_common
+2.12
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/scroll_bars_common-3.0.0/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/scroll_bars_common-3.0.0/lib/
 shared_preferences
 2.14
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.18/

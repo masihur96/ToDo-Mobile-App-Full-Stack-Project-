@@ -170,6 +170,42 @@ class DataFetcher {
 
   }
 
+  Future<Task?> createTask({
+    required String title,
+    required String body,
+    required String isFinished,
+    required String assignTo,
+    required String assignBy,
+  }) async {
+    Task? task;
+    FormData formData = FormData.fromMap({
+      "title": title, "body": body,"isFinished":isFinished,"user_id":assignBy,"assign_to_id":assignTo
+    });
+
+
+    Response<dynamic>? response =
+    await _connectionHelper.postData(AppUrls.createTask, formData);
+
+
+    if (response != null) {
+      if (response.statusCode == 200) {
+        try {
+          var data = response.data;
+
+          // task = User(
+          //   userId:data["data"]["id"],
+          //   userName: data["data"]["name"],
+          //   email: data["data"]["email"],
+          // );
+        } catch (e) {
+          print(e);
+
+        }
+      }
+    }
+    return task;
+  }
+
   // Future<User?> getValidity({
   //   required String deviceId,
   // }) async {
