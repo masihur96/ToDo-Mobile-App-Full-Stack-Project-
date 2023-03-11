@@ -170,40 +170,48 @@ class DataFetcher {
 
   }
 
-  Future<Task?> createTask({
+  Future<bool?> createTask({
     required String title,
     required String body,
-    required String isFinished,
-    required String assignTo,
-    required String assignBy,
+    required bool isFinished,
+    required int assignTo,
+    required int assignBy,
   }) async {
-    Task? task;
-    FormData formData = FormData.fromMap({
-      "title": title, "body": body,"isFinished":isFinished,"user_id":assignBy,"assign_to_id":assignTo
-    });
+    bool? isCreated;
 
+    // dynamic data = {
+    //   "name": name,
+    //   "email": email,
+    //   "password": password,
+    //
+    // };
+
+    dynamic data = {
+      "title": title, "body": body,"isFinished":isFinished,"user_id":assignBy,"assign_to_id":assignTo
+    };
+
+    // print(formData);
 
     Response<dynamic>? response =
-    await _connectionHelper.postData(AppUrls.createTask, formData);
+    await _connectionHelper.postData(AppUrls.createTask, data);
 
+    // print(response!.statusCode);
 
     if (response != null) {
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         try {
           var data = response.data;
 
-          // task = User(
-          //   userId:data["data"]["id"],
-          //   userName: data["data"]["name"],
-          //   email: data["data"]["email"],
-          // );
+          isCreated =  true;
+
         } catch (e) {
           print(e);
+          isCreated =  false;
 
         }
       }
     }
-    return task;
+    return isCreated;
   }
 
   // Future<User?> getValidity({

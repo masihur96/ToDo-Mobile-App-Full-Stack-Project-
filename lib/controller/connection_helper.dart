@@ -186,6 +186,8 @@ class ConnectionHelper {
             (X509Certificate cert, String host, int port) => true;
         return client;
       };
+      print(url);
+      print(data);
       var response = await dio.post(url,
           data: data,
 

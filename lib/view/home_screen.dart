@@ -24,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final DataFetcher _dataFetcher = DataFetcher();
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -39,6 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Task> finishedTask=[];
 
   fetchTask()async{
+    setState((){
+      _isLoading = true;
+    });
     assignByMeTask=[];
     assignToMeTask=[];
     totalTask=[];
@@ -73,16 +77,23 @@ class _HomeScreenState extends State<HomeScreen> {
      setState(() {
 
      });
-
+    setState((){
+      _isLoading = false;
+    });
   }
   List<User> totalUser=[];
 
   fetchUser()async{
-
+    setState((){
+      _isLoading = true;
+    });
     totalUser=[];
     List<User>?  users = await  _dataFetcher.retrieveAllUser();
     totalUser = users!;
  print(users.length);
+    setState((){
+      _isLoading = false;
+    });
 
   }
 
@@ -93,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: GestureDetector(
         onTap: (){
           //fetchUser();
-         Navigator.push(context, MaterialPageRoute(builder: (_)=>AddTaskScreen(users: totalUser,)));
+         Navigator.push(context, MaterialPageRoute(builder: (_)=>AddTaskScreen(users: totalUser,user: widget.user,)));
         },
         child: const CircleAvatar(
           backgroundColor: Colors.black,
@@ -141,7 +152,14 @@ class _HomeScreenState extends State<HomeScreen> {
             Text("Your Task",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: screenSize(context, .04),fontWeight: FontWeight.bold),),
-            Expanded(
+            _isLoading?Center(child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                SizedBox(height: 100,),
+                CircularProgressIndicator(),
+              ],
+            )):  Expanded(
               child: ListView.builder(
                 itemCount: totalTask.length,
                 shrinkWrap: true,
